@@ -15,3 +15,4 @@ Depends: python3,
 Homepage: https://github.com/leberrigan/enpi
 Description: ENPI support scripts for SensorGnome
  Python tooling used by sensorgnome-control for ENPI functionality.
+ 
