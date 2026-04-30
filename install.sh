@@ -2,13 +2,17 @@
 set -e
 
 HOME_DIR="/home/gnome"
-ENPI_DIR="/opt/sensorgnome/enpi"
 LOG_DIR="/var/log/enpi"
 DATA_DIR="/data/enpi"
-REPO_NAME="enpi"
-BRANCH=${1:-"enpi"}
+ENPI_DIR="/opt/sensorgnome/enpi"
+CTRL_DIR="/opt/sensorgnome/control"
+
+ENPI_REPO="enpi"
+ENPI_BRANCH="sensorgnome"
+CTRL_REPO="sensorgnome-control"
+CTRL_BRANCH=${1:-"enpi"}
+
 SERVICE_USER="gnome"
-SG_REPO_NAME="sensorgnome-control"
 
 
 echo "=== enpi Installer ==="
@@ -26,9 +30,9 @@ sudo usermod -aG gpio,i2c,dialout "$SERVICE_USER"
 echo "[3/8] Installing code into $ENPI_DIR..."
 
 cd "$HOME_DIR"
-git clone https://github.com/sensorgnome-org/"$REPO_NAME".git
-cd "$REPO_NAME"
-git checkout sensorgnome
+git clone https://github.com/sensorgnome-org/"$ENPI_REPO".git
+cd "$ENPI_REPO"
+git checkout "$ENPI_BRANCH"
 
 sudo touch /etc/sensorgnome/secrets.env
 
@@ -96,16 +100,16 @@ sudo udevadm trigger
 #7. Clone and install sg-control repo
 echo "[8/8] Installing custom sg-control software"
 cd "$HOME_DIR"
-git clone "https://github.com/leberrigan/$SG_REPO_NAME.git"
-cd "$SG_REPO_NAME"
-git switch "$BRANCH"
+git clone "https://github.com/leberrigan/$CTRL_REPO.git"
+cd "$CTRL_REPO"
+git switch "$CTRL_BRANCH"
 
 sudo mv "acquisition.json" /etc/sensorgnome/
-sudo mv "src/dashboard.js" /opt/sensorgnome/control/
-sudo mv "src/enpi.js" /opt/sensorgnome/control/
-sudo mv "src/fd-config.json" /opt/sensorgnome/control/
-sudo mv "src/main.js" /opt/sensorgnome/control/
-sudo mv "src/motus_up.js" /opt/sensorgnome/control/
+sudo mv "src/dashboard.js" "$CTRL_DIR"
+sudo mv "src/enpi.js" "$CTRL_DIR"
+sudo mv "src/fd-config.json" "$CTRL_DIR"
+sudo mv "src/main.js" "$CTRL_DIR"
+sudo mv "src/motus_up.js" "$CTRL_DIR"
 
 sudo systemctl restart sg-control
 
