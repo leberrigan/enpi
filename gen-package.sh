@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#! /bin/bash -e
 
 DESTDIR=build-temp
 PKGNAME=enpi
