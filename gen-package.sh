@@ -15,7 +15,7 @@ install -d "$DESTDIR$INSTALL_ROOT"
 install -m 755 enpi-*.py "$DESTDIR$INSTALL_ROOT"
 install -m 644 requirements.txt "$DESTDIR$INSTALL_ROOT"
 install -m 644 enpi-config.json "$DESTDIR$INSTALL_ROOT" 2>/dev/null || true
-install -m 644 read-*.py "$DESTDIR$INSTALL_ROOT"
+install -m 644 read_*.py "$DESTDIR$INSTALL_ROOT"
 install -m 644 test-*.py "$DESTDIR$INSTALL_ROOT" 2>/dev/null || true
 
 # Copy any additional supporting files
