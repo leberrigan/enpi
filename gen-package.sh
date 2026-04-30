@@ -24,6 +24,8 @@ cp -r extra-files/* "$DESTDIR$INSTALL_ROOT" 2>/dev/null || true
 
 # Install DEBIAN control files
 cp -r DEBIAN "$DESTDIR"
+chmod 0755 "$DESTDIR"/DEBIAN/post*
+chmod 0755 "$DESTDIR"/DEBIAN/pre*
 
 # Set package version: YYYY.DDD (same convention as sensorgnome-control)
 sed -e "/^Version/s/:.*/: $(TZ=PST8PDT date +%Y.%j)/" \

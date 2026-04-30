@@ -13,6 +13,6 @@ Depends: python3,
  python3-boto3,
  python3-pigpio
 Homepage: https://github.com/leberrigan/enpi
+Maintainer: Lucas Berrigan (lberrigan@birdscanada.org)
 Description: ENPI support scripts for SensorGnome
  Python tooling used by sensorgnome-control for ENPI functionality.
- 
