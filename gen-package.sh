@@ -1,5 +1,4 @@
 #! /bin/bash -e
-
 DESTDIR=build-temp
 PKGNAME=enpi
 INSTALL_ROOT=/opt/sensorgnome/enpi
