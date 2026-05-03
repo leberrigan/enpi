@@ -28,4 +28,18 @@ if [ -f "$RULE_SRC" ]; then
 fi
 
 
+# Install Python dependencies that are not available as Debian packages
+if command -v pip3 >/dev/null 2>&1; then
+  pip3 install --no-cache-dir \
+    adafruit-blinka \
+    adafruit-circuitpython-bmp280 \
+    adafruit-circuitpython-bme280 \
+    boto3 \
+    botocore
+else
+  echo "pip3 not found; enpi Python dependencies not installed" >&2
+  exit 1
+fi
+
+
 exit 0
