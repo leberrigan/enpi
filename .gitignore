@@ -1,3 +1,5 @@
 /tests
 secrets.env
 data/
+*-certificate.pem.crt
+*-private.pem.key

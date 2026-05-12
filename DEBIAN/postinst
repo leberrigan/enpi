@@ -7,7 +7,7 @@ if command -v systemctl >/dev/null 2>&1; then
   systemctl start pigpiod || true
 fi
 
-# Set up data an log files
+# Set up data and log files
 if id gnome >/dev/null 2>&1; then
   install -d -o gnome -g gnome /data/enpi
   install -d -o gnome -g gnome /var/log/enpi
@@ -15,6 +15,9 @@ else
   install -d /data/enpi
   install -d /var/log/enpi
 fi
+
+# Create directory for per-device certificate (written by enpi-provision.service on first boot)
+install -d -m 700 /etc/enpi
 
 
 # Set up udev rules
@@ -45,7 +48,15 @@ fi
   adafruit-circuitpython-bmp280 \
   adafruit-circuitpython-bme280 \
   boto3 \
-  botocore
+  botocore \
+  awsiotsdk
 
+
+# Install and enable the first-boot provisioning service
+install -m 644 /opt/sensorgnome/enpi/provisioning/enpi-provision.service /etc/systemd/system/
+if command -v systemctl >/dev/null 2>&1; then
+  systemctl daemon-reload
+  systemctl enable enpi-provision.service || true
+fi
 
 exit 0

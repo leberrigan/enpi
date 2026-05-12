@@ -14,3 +14,5 @@ jobs:
     secrets:
       GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
       GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+      CLAIM_CERT: ${{ secrets.CLAIM_CERT }}
+      CLAIM_PRIVATE_KEY: ${{ secrets.CLAIM_PRIVATE_KEY }}
