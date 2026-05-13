@@ -29,6 +29,15 @@
 - Daily file rotation.
 
 
+## Help text
+
+
+# Provisioning
+Provisioning is required to upload data.Provisioning is only done once per device. It should be done automatically on startup, but if there's a failure you can always try clicking the "provision" button.
+
+
+
+
 ## Installation
 With internet connection, run: 
 ```

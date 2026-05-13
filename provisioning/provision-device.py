@@ -5,7 +5,7 @@ Exchanges the shared claim cert for a device-unique cert. Safe to call repeatedl
 exits immediately with status "already-provisioned" if the device cert already exists.
 
 Output: JSON lines on stdout, one per event:
-  ["status", "already-provisioned"]
+  ["status", "already-provisioned", {"thing_name": "<site-name>", "certificate_id": "<id>"}]
   ["status", "connecting"]
   ["status", "provisioning"]
   ["status", "provisioned", {"thing_name": "<site-name>", "certificate_id": "<id>"}]
@@ -34,6 +34,8 @@ PROVISIONING_DIR = f"{INSTALL_DIR}/provisioning"
 DEVICE_CERT_DIR = "/etc/enpi"
 DEVICE_CERT = f"{DEVICE_CERT_DIR}/device-cert.pem"
 DEVICE_KEY = f"{DEVICE_CERT_DIR}/device-private-key.pem"
+THING_NAME_FILE = f"{DEVICE_CERT_DIR}/thing-name"
+CERT_ID_FILE = f"{DEVICE_CERT_DIR}/certificate-id"
 TEMPLATE_NAME = "enpi-provisioning-template"
 
 
@@ -55,9 +57,20 @@ def get_site_name():
     return socket.gethostname()
 
 
+def read_file(path):
+    try:
+        with open(path) as f:
+            return f.read().strip()
+    except Exception:
+        return None
+
+
 def provision():
     if os.path.exists(DEVICE_CERT) and os.path.exists(DEVICE_KEY):
-        emit(["status", "already-provisioned"])
+        emit(["status", "already-provisioned", {
+            "thing_name": read_file(THING_NAME_FILE),
+            "certificate_id": read_file(CERT_ID_FILE),
+        }])
         sys.exit(0)
 
     try:
@@ -185,10 +198,10 @@ def provision():
             fh.write(content)
         os.chmod(path, 0o600)
 
-    thing_name_file = os.path.join(DEVICE_CERT_DIR, "thing-name")
-    with open(thing_name_file, "w") as fh:
-        fh.write(thing_name)
-    os.chmod(thing_name_file, 0o644)
+    for path, content in [(THING_NAME_FILE, thing_name), (CERT_ID_FILE, cert_data["id"])]:
+        with open(path, "w") as fh:
+            fh.write(content)
+        os.chmod(path, 0o644)
 
     emit(["status", "provisioned", {
         "thing_name": thing_name,
