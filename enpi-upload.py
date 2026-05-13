@@ -116,12 +116,13 @@ def main():
         logging.error(f"Data directory missing: {DATA_DIR}")
         return
 
-    if not os.path.exists(f"{DEVICE_CERT_DIR}/device-cert.pem"):
+    if not os.path.exists(f"{DEVICE_CERT_DIR}/device-cert.pem") or not os.path.exists(f"{DEVICE_CERT_DIR}/thing-name"):
         print(json.dumps(["status", "not-provisioned"]), flush=True)
         logging.error("Device not provisioned — enpi-provision.service has not run successfully")
         return
 
-    with open(f"{INSTALL_DIR}/enpi-config.json") as f:
+
+    with open(f"{PROVISIONING_DIR}/iot-config.json") as f:
         config = json.load(f)
     bucket = config["bucket_name"]
     endpoint = config["iot_endpoint"]

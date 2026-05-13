@@ -1,0 +1,6 @@
+{
+    "iot_endpoint": "c1rst7li4nrpvz.credentials.iot.us-east-1.amazonaws.com",
+    "iot_mqtt_endpoint": "a2mv8h3jbkrk1i-ats.iot.us-east-1.amazonaws.com",
+    "iot_role_alias": "enpi-upload-role",
+    "bucket_name": "enpi-sensors"
+}

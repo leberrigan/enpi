@@ -43,20 +43,8 @@ fi
 "$VENV_DIR/bin/pip" install --no-cache-dir --upgrade pip
 
 # Install required Python libraries
-"$VENV_DIR/bin/pip" install --no-cache-dir \
-  adafruit-blinka \
-  adafruit-circuitpython-bmp280 \
-  adafruit-circuitpython-bme280 \
-  boto3 \
-  botocore \
-  awsiotsdk
+"$VENV_DIR/bin/pip" install --no-cache-dir -r /opt/sensorgnome/enpi/requirements.txt
 
 
-# Install and enable the first-boot provisioning service
-install -m 644 /opt/sensorgnome/enpi/provisioning/enpi-provision.service /etc/systemd/system/
-if command -v systemctl >/dev/null 2>&1; then
-  systemctl daemon-reload
-  systemctl enable enpi-provision.service || true
-fi
 
 exit 0

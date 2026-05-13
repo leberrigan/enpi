@@ -23,8 +23,9 @@
 
 
 #### Data is uploaded to AWS
-- Secrets file stores keys/bucket name.
-- Stored in folder based on serial number.
+- Each device is provisioned with a unique X.509 certificate via AWS IoT Fleet Provisioning on first boot (triggered by sensorgnome-control).
+- Temporary S3 credentials are fetched at upload time from the AWS IoT Credentials Provider — no static keys stored on the device.
+- Data is stored in a per-device folder in S3 named after the site name (e.g. `enpi-sensors/SG-BC4ERPI3CF2A/`).
 - Daily file rotation.
 
 
@@ -80,7 +81,7 @@ env/bin/python3 test-sqmlu.py
 
 ### Test Uploader
 ```
-sudo env $(grep -v '^\s*#' /opt/sensorgnome/enpi/secrets.env | grep -v '^\s*$' | xargs) /opt/sensorgnome/enpi/env/bin/python3 /opt/sensorgnome/enpi/uploader.py
+/opt/sensorgnome/enpi/env/bin/python3 /opt/sensorgnome/enpi/enpi-upload.py
 ```
 
 ---
