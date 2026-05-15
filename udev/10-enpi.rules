@@ -1,4 +1,17 @@
-# SQM-LU USB-serial device (FTDI)
-SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", SYMLINK+="ttySQM0", ENV{ID_MM_CANDIDATE}="0", GOTO="enpi_end"
+# SQM-LU USB-serial device (FTDI) - Sky quality meter
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", SYMLINK+="ttySQM0", ENV{ID_MM_CANDIDATE}="0", GOTO="sqm-lu"
 
-LABEL="enpi_end"
+GOTO="done"
+
+# SQM-LU USB-serial device (FTDI) - Sky quality meter
+LABEL="sqm-lu"
+# Set up flow control
+IMPORT{program}="/bin/sh -c '(sleep 2; /bin/stty -F /dev/ttyUSB%n 115200 raw -ixon -ixoff -crtscts &)'"
+IMPORT{program}="/opt/sensorgnome/udev-usb/get-usb-port.py %p"
+# Add a symlink to the folder that hubman.js listens to
+ENV{PORT_NUM}!="",SYMLINK+="sensorgnome/SQM-LU.port=%E{PORT_NUM}.usbPath=%s{busnum}:%s{devnum}.port_path=%E{PORT_PATH}"
+ENV{PORT_NUM}!="",RUN{program}+="/usr/bin/logger -t sensorgnome Added SQM-LU %E{PORT_PATH}->port %E{PORT_NUM}"
+
+LABEL="done"
+
+# Exit

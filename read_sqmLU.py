@@ -4,6 +4,7 @@ import serial.tools.list_ports
 import logging
 import json
 import time
+import os
 
 # Replace with the actual port your SQM is on
 SERIAL_PORT = '/dev/ttySQM0'
@@ -11,9 +12,10 @@ BAUD_RATE = 115200
 VENDOR_ID = 0x0403
 PRODUCT_ID = 0x6001
 
+ser = None
 
 def init(set_verbose=False, port=SERIAL_PORT):
-    global verbose, ser
+    global verbose
 
     verbose = set_verbose
     if open(port):
@@ -36,7 +38,6 @@ def init(set_verbose=False, port=SERIAL_PORT):
                     print(f"[SQM-LU] Wrong device found at address \"{port}\": vendor={vid}, product={pid}")
                     logging.info(f"[SQM-LU] Wrong device found at address: {port}")
                 print(json.dumps(["status", "no-dev"]), flush=True)
-                ser = None
     else:
         if verbose:
             print(f"[SQM-LU] No device at address {port}")
@@ -79,7 +80,9 @@ def stop():
 
 def read():
     if ser is None:
-        print("[SQM-LU] Serial port not open")
+        print(json.dumps(["status", "no-dev"]), flush=True)
+        if verbose:
+            print("[SQM-LU] Serial port not open")
         return None
 
     if verbose:

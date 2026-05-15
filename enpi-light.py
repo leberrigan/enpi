@@ -62,7 +62,10 @@ def init():
         logging.info("[enpi-light] Start logging.")
 
     try: 
-        sqmLU.init( args.verbose, PORT_sqmLU )
+        success = sqmLU.init( args.verbose, PORT_sqmLU )
+        if not success:
+            print(json.dumps(["status", "no-dev"]), flush=True)
+            stop()
 
     except Exception as e:
         if args.verbose:
