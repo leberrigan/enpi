@@ -2,17 +2,19 @@
     "air": {
         "lineBuffer": "",
         "script": "enpi-air.py",
-        "active": true
+        "active": true,
+        "intervalSecs": 0
     },
     "light": {
         "lineBuffer": "",
         "script": "enpi-light.py",
-        "active": true
+        "active": true,
+        "intervalSecs": 0
     },
     "upload": {
         "lineBuffer": "",
         "script": "enpi-upload.py",
         "active": true,
-        "frequency": 1
+        "intervalSecs": 3600
     }
 }
