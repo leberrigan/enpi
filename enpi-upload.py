@@ -128,6 +128,13 @@ def main():
     endpoint = config["iot_endpoint"]
     role_alias = config["iot_role_alias"]
 
+    if not args.poll:
+        files = [f for f in os.listdir(DATA_DIR) if is_upload_candidate(f)]
+        if not files:
+            logging.info("No files to upload")
+            print(json.dumps(["status", "connected-no-files"]), flush=True)
+            return
+
     try:
         aws_id, aws_key, aws_token = fetch_iot_credentials(endpoint, role_alias)
     except Exception as e:
@@ -152,13 +159,6 @@ def main():
     if not bucket_exists:
         print(json.dumps(["status", "no-s3-connection"]), flush=True)
         logging.error("Cannot reach S3, aborting upload")
-        return
-
-    files = [f for f in os.listdir(DATA_DIR) if is_upload_candidate(f)]
-
-    if not files:
-        logging.info("No files to upload")
-        print(json.dumps(["status", "connected-no-files"]), flush=True)
         return
 
     for f in files:
